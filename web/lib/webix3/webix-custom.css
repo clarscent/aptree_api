@@ -1,0 +1,93 @@
+.webix_column > div:nth-child(even) {
+	background-color: inherit;
+}
+
+.webix_column > div.webix_cell_select,
+.webix_column > div.webix_column_select,
+.webix_column > div.webix_row_select {
+	background-size: 100% 100%;
+	background-position: 0 0;
+	color: #1c91fb;
+	background: #f1f8ff;
+}
+
+.webix_ss_header, .webix_ss_header TD, .webix_ss_vscroll_header, .webix_dd_drag_column {
+	background: #f8f8f8;
+}
+
+.webix_ss_vscroll_header,
+.webix_ss_header {
+	border-top: 1px solid #333
+}
+
+table {
+	font-size: 14px !important;
+}
+
+.webix_view {
+	font-family: "맑은 고딕", sans-serif;
+	font-weight: 400;
+}
+
+.webix_dt_editor input, .webix_dt_editor select {
+	border: transparent;
+}
+
+.webix_c_scroll_y div {
+	width: 10px !important;
+	margin-left: -2px;
+	z-index: 99999;
+}
+
+.webix_c_scroll_y div:hover {
+	width: 12px !important;
+	margin-left: -4px;
+	z-index: 99999;
+
+}
+
+.webix_c_scroll_x div {
+	height: 10px !important;
+	margin-top: -2px;
+	z-index: 99999;
+}
+
+.webix_c_scroll_x:hover div {
+	height: 12px !important;
+	margin-top: -4px;
+	z-index: 99999;
+}
+
+.webix_hcell {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/*.webix_cell {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}*/
+
+.webix_ss_vscroll_header {
+	width: 16px !important;
+	height: 35px !important;
+}
+
+.webix_ss_header {
+	border-bottom: 1px solid rgb(213, 213, 213);
+}
+
+.webix_ss_sort_asc, .webix_ss_sort_desc {
+    right: 2px;
+    top: calc(50% - 5px);
+}
+
+.webix_view {
+	font-size: 13px;
+}
+
+.webix_table_checkbox {
+	margin-top: 8px;
+}

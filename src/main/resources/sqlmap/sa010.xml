@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SA010Mapper">
+<resultMap id="resultMap" type="java.util.HashMap"/>
+
+    <select id="selectOrders" resultType="java.util.HashMap">
+/*SA010Mapper.selectOrders*/
+SELECT a.order_id,
+       a.order_dt,
+       a.company_code,
+       b.company_name,
+       a.reference_no,
+       a.to_company_name,
+       a.to_company_nickname,
+       a.to_street1,
+       a.to_street2,
+       a.to_street3,
+       a.to_city,
+       a.to_state,
+       a.to_postal_code,
+       a.to_country,
+       a.to_receiver_vat_no,
+       a.to_contact_person,
+       a.to_country_calling_code,
+       a.to_phone,
+       a.to_phone2,
+       a.to_email,
+       a.service_class,
+       a.inbound_outbound,
+       a.expected_pickup_date,
+       a.goods_description,
+       a.instruction,
+       a.sender_name,
+       a.inco_terms,
+       a.declaration_yn,
+       a.invoice_total_value,
+       a.length_unit_code,
+       a.weight_unit_code,
+       a.currency_code,
+       a.sales_channel,
+       a.goods_issue_no,
+       a.c_company_name,
+       a.c_street1,
+       a.c_street2,
+       a.c_street3,
+       a.c_city,
+       a.c_state,
+       a.c_postal_code,
+       a.c_country,
+       a.c_receiver_vat_no,
+       a.c_contact_person,
+       a.c_country_calling_code,
+       a.c_phone,
+       a.c_phone2,
+       a.c_email,
+       a.sender_biz_reg_no,
+       a.export_commodity_class,
+       a.pickup_address,
+       a.square_party_id,
+       a.collecting_site_usage_yn,
+       a.warehousing_method,
+       a.warehousing_information,
+       a.requested_items,
+       a.s_company_name,
+       a.s_address,
+       a.s_city,
+       a.s_state,
+       a.s_postal_code,
+       a.s_country,
+       a.s_contact_person,
+       a.s_country_calling_code,
+       a.s_phone_no,
+       a.s_email,
+       a.tracking_no
+  FROM IF_ORDER_INFO a
+  LEFT JOIN if_comp_info b
+    ON A.company_code = b.company_code
+ WHERE 1 = 1
+   AND a.order_dt BETWEEN #{start_dt} and #{end_dt}
+   AND a.order_id like coalesce(#{order_id}, a.order_id) || '%'
+   AND (coalesce(a.company_code, '@') like '%' || coalesce(#{company}, coalesce(a.company_code, '@')) || '%' OR coalesce(b.company_name, '@') like '%' || coalesce(#{company}, coalesce(b.company_name, '@')) || '%')
+   AND coalesce(a.to_street1, '') || coalesce(a.to_street2, '') || coalesce(a.to_street3, '') like '%' || coalesce(#{to_street}, coalesce(a.to_street1, '') || coalesce(a.to_street2, '') || coalesce(a.to_street3, '')) || '%'
+ ORDER BY order_id desc
+    </select>
+
+
+    <select id="selectPackages" resultType="java.util.HashMap">
+/*SA010Mapper.selectPackages*/
+SELECT *
+  FROM IF_ORDER_PACKAGES
+ WHERE ORDER_ID = #{order_id}
+ ORDER BY PACKAGE_SEQ asc;
+    </select>
+
+    <select id="selectPackageItems" resultType="java.util.HashMap">
+/*SA010Mapper.selectPackageItems*/
+SELECT *
+  FROM IF_ORDER_PACKAGE_ITEMS
+ WHERE ORDER_ID = #{order_id}
+   AND PACKAGE_SEQ = #{package_seq}::NUMERIC
+ORDER BY item_seq asc;
+    </select>
+
+    <select id="checkOrder" resultType="java.util.HashMap">
+/*SA010Mapper.selectOrderID*/
+SELECT CASE WHEN COUNT(*) = 0 THEN 'N' ELSE 'Y' END "IS_EXIST", MAX(order_id) "ORDER_ID", MAX(order_id) "ORDER_DT"
+  FROM IF_ORDER_INFO
+ WHERE TO_COMPANY_NAME = #{to_company_name}
+   AND REFERENCE_NO = #{reference_no}
+    </select>
+
+
+    <insert id="insertOrder" parameterType="java.util.HashMap">
+/*SA010Mapper.insertOrder*/
+INSERT INTO IF_ORDER_INFO
+       (ORDER_ID, ORDER_DT, COMPANY_CODE, REFERENCE_NO, TO_COMPANY_NAME, TO_COMPANY_NICKNAME,
+        TO_STREET1, TO_STREET2, TO_STREET3, TO_CITY, TO_STATE,
+        TO_POSTAL_CODE, TO_COUNTRY, TO_RECEIVER_VAT_NO, TO_CONTACT_PERSON, TO_COUNTRY_CALLING_CODE,
+        TO_PHONE, TO_PHONE2, TO_EMAIL, SERVICE_CLASS, INBOUND_OUTBOUND,
+        EXPECTED_PICKUP_DATE, GOODS_DESCRIPTION, INSTRUCTION, SENDER_NAME, INCO_TERMS,
+        DECLARATION_YN, INVOICE_TOTAL_VALUE, LENGTH_UNIT_CODE, WEIGHT_UNIT_CODE, CURRENCY_CODE,
+        SALES_CHANNEL, GOODS_ISSUE_NO, C_COMPANY_NAME, C_STREET1, C_STREET2,
+        C_STREET3, C_CITY, C_STATE, C_POSTAL_CODE, C_COUNTRY,
+        C_RECEIVER_VAT_NO, C_CONTACT_PERSON, C_COUNTRY_CALLING_CODE, C_PHONE, C_PHONE2,
+        C_EMAIL, DEL_YN, SENDER_BIZ_REG_NO, EXPORT_COMMODITY_CLASS, PICKUP_ADDRESS,
+        SQUARE_PARTY_ID, COLLECTING_SITE_USAGE_YN, WAREHOUSING_METHOD, WAREHOUSING_INFORMATION, REQUESTED_ITEMS,
+        S_COMPANY_NAME, S_ADDRESS, S_CITY, S_STATE, S_POSTAL_CODE,
+        S_COUNTRY, S_CONTACT_PERSON, S_COUNTRY_CALLING_CODE, S_PHONE_NO, S_EMAIL,
+        RMK, REG_DTTM, REG_ID, REG_IP)
+VALUES (#{order_id}, TO_CHAR(NOW(), 'YYYYMMDD'), #{company_code}, #{reference_no}, #{to_company_name}, #{to_company_nickname},
+        #{to_street1}, #{to_street2}, #{to_street3}, #{to_city}, #{to_state},
+        #{to_postal_code}, #{to_country}, #{to_receiver_vat_no}, #{to_contact_person}, #{to_country_calling_code},
+        #{to_phone}, #{to_phone2}, #{to_email}, #{service_class}, #{inbound_outbound},
+        #{expected_pickup_date}, #{goods_description}, #{instruction}, #{sender_name}, #{inco_terms},
+        #{declaration_yn}, #{invoice_total_value}, #{length_unit_code}, #{weight_unit_code}, #{currency_code},
+        #{sales_channel}, #{goods_issue_no}, #{c_company_name}, #{c_street1}, #{c_street2},
+        #{c_street3}, #{c_city}, #{c_state}, #{c_postal_code}, #{c_country},
+        #{c_receiver_vat_no}, #{c_contact_person}, #{c_country_calling_code}, #{c_phone}, #{c_phone2},
+        #{c_email}, #{del_yn}, #{sender_biz_reg_no}, #{export_commodity_class}, #{pickup_address},
+        #{square_party_id}, #{collecting_site_usage_yn}, #{warehousing_method}, #{warehousing_information}, #{requested_items},
+        #{s_company_name}, #{s_address}, #{s_city}, #{s_state}, #{s_postal_code},
+        #{s_country}, #{s_contact_person}, #{s_country_calling_code}, #{s_phone_no}, #{s_email},
+        #{rmk}, now(), #{user_id}, #{user_ip})
+    </insert>
+
+    <insert id="insertPackages" parameterType="java.util.HashMap">
+/*SA010Mapper.insertPackages*/
+INSERT INTO if_order_packages
+       (order_id, package_seq, commercial_yn, package_remark, weight,
+        width, depth, height, del_yn,
+        rmk, reg_dttm, reg_id, reg_ip)
+VALUES (#{order_id}, #{package_seq}::NUMERIC, #{commercial_yn}, #{package_remark}, #{weight}::NUMERIC,
+        #{width}::NUMERIC, #{depth}::NUMERIC, #{height}::NUMERIC, #{del_yn},
+        #{rmk}, now(), #{user_id}, #{user_ip})
+    </insert>
+
+    <insert id="insertPackageItems" parameterType="java.util.HashMap">
+/*SA010Mapper.insertPackageItems*/
+insert into if_order_package_items
+      (order_id, package_seq, item_seq, article_category, article_name,
+       article_url, article_description, article_local_description, number_of_article, hs_code,
+       item_model_nm, item_brand_nm, item_orgn_nation_cd, article_weight, invoice_value,
+       sku_no, options, del_yn,
+       rmk, reg_dttm, reg_id, reg_ip)
+VALUES (#{order_id}, #{package_seq}::NUMERIC, #{item_seq}::NUMERIC, #{article_category}, #{article_name},
+        #{article_url}, #{article_description}, #{article_local_description}, #{number_of_article}::NUMERIC, #{hs_code},
+        #{item_model_nm}, #{item_brand_nm}, #{item_orgn_nation_cd}, #{article_weight}::NUMERIC, #{invoice_value}::NUMERIC,
+        #{sku_no}, #{options}, #{del_yn},
+        #{rmk}, now(), #{reg_id}, #{reg_ip})
+    </insert>
+
+    <update id="updateOrder" parameterType="java.util.HashMap">
+/*SA010Mapper.updateOrder*/
+UPDATE IF_ORDER_INFO
+   SET REFERENCE_NO = #{reference_no},
+       TO_COMPANY_NAME = #{to_company_name},
+       TO_COMPANY_NICKNAME = #{to_company_nickname},
+       TO_STREET1 = #{to_street1},
+       TO_STREET2 = #{to_street2},
+       TO_STREET3 = #{to_street3},
+       TO_CITY = #{to_city},
+       TO_STATE = #{to_state},
+       TO_POSTAL_CODE = #{to_postal_code},
+       TO_COUNTRY = #{to_country},
+       TO_RECEIVER_VAT_NO = #{to_receiver_vat_no},
+       TO_CONTACT_PERSON = #{to_contact_person},
+       TO_COUNTRY_CALLING_CODE = #{to_country_calling_code},
+       TO_PHONE = #{to_phone},
+       TO_PHONE2 = #{to_phone2},
+       TO_EMAIL = #{to_email},
+       SERVICE_CLASS = #{service_class},
+       INBOUND_OUTBOUND = #{inbound_outbound},
+       EXPECTED_PICKUP_DATE = #{expected_pickup_date},
+       GOODS_DESCRIPTION = #{goods_description},
+       INSTRUCTION = #{instruction},
+       SENDER_NAME = #{sender_name},
+       INCO_TERMS = #{inco_terms},
+       DECLARATION_YN = #{declaration_yn},
+       INVOICE_TOTAL_VALUE = #{invoice_total_value}::NUMERIC,
+       LENGTH_UNIT_CODE = #{length_unit_code},
+       WEIGHT_UNIT_CODE = #{weight_unit_code},
+       CURRENCY_CODE = #{currency_code},
+       SALES_CHANNEL = #{sales_channel},
+       GOODS_ISSUE_NO = #{goods_issue_no},
+       C_COMPANY_NAME = #{c_company_name},
+       C_STREET1 = #{c_street1},
+       C_STREET2 = #{c_street2},
+       C_STREET3 = #{c_street3},
+       C_CITY = #{c_city},
+       C_STATE = #{c_state},
+       C_POSTAL_CODE = #{c_postal_code},
+       C_COUNTRY = #{c_country},
+       C_RECEIVER_VAT_NO = #{c_receiver_vat_no},
+       C_CONTACT_PERSON = #{c_contact_person},
+       C_COUNTRY_CALLING_CODE = #{c_country_calling_code},
+       C_PHONE = #{c_phone},
+       C_PHONE2 = #{c_phone2},
+       C_EMAIL = #{c_email},
+       SENDER_BIZ_REG_NO = #{sender_biz_reg_no},
+       EXPORT_COMMODITY_CLASS = #{export_commodity_class},
+       PICKUP_ADDRESS = #{pickup_address},
+       SQUARE_PARTY_ID = #{square_party_id},
+       COLLECTING_SITE_USAGE_YN = #{collecting_site_usage_yn},
+       WAREHOUSING_METHOD = #{warehousing_method},
+       WAREHOUSING_INFORMATION = #{warehousing_information},
+       REQUESTED_ITEMS = #{requested_items},
+       S_COMPANY_NAME = #{s_company_name},
+       S_ADDRESS = #{s_address},
+       S_CITY = #{s_city},
+       S_STATE = #{s_state},
+       S_POSTAL_CODE = #{s_postal_code},
+       S_COUNTRY = #{s_country},
+       S_CONTACT_PERSON = #{s_contact_person},
+       S_COUNTRY_CALLING_CODE = #{s_country_calling_code},
+       S_PHONE_NO = #{s_phone_no},
+       S_EMAIL = #{s_email},
+       DEL_YN = #{del_yn},
+       RMK = #{rmk},
+       UPD_DTTM = now(),
+       UPD_ID = #{user_id},
+       UPD_IP = #{user_ip}
+ WHERE ORDER_ID = #{order_id}
+    </update>
+
+    <delete id="deletePackages" parameterType="java.util.HashMap">
+/*SA010Mapper.deletePackages*/
+DELETE FROM IF_ORDER_PACKAGES
+ WHERE order_id = #{order_id}
+    </delete>
+
+    <delete id="deletePackageItems" parameterType="java.util.HashMap">
+/*SA010Mapper.deletePackageItems*/
+DELETE FROM if_order_package_items
+ WHERE order_id = #{order_id}
+    </delete>
+
+    <select id="excelList" resultType="java.util.HashMap">
+/*SA010Mapper.excelList*/
+SELECT a.to_company_name,
+        a.to_street1,
+        a.to_street2,
+        a.to_street3,
+        a.to_city,
+        a.to_state,
+        a.to_postal_code,
+        a.to_country,
+        a.to_receiver_vat_no,
+        a.to_contact_person,
+        a.to_country_calling_code,
+        a.to_phone,
+        a.to_phone2,
+        a.to_email,
+        a.to_company_nickname,
+        a.service_class,
+        a.inbound_outbound,
+        a.sales_channel,
+        a.reference_no,
+        a.goods_issue_no,
+        a.expected_pickup_date,
+        a.goods_description,
+        a.instruction,
+        a.sender_name,
+        a.sender_biz_reg_no,
+        a.inco_terms,
+        a.declaration_yn,
+        a.export_commodity_class,
+        a.weight_unit_code,
+        a.length_unit_code,
+        a.currency_code,
+        a.pickup_address,
+        a.square_party_id,
+        a.collecting_site_usage_yn,
+        a.warehousing_method,
+        a.warehousing_information,
+        a.requested_items,
+        b.package_seq,
+        b.commercial_yn,
+        b.package_remark,
+        b.weight,
+        b.width,
+        b.depth,
+        b.height,
+        c.article_category,
+        c.article_name,
+        c.article_url,
+        c.article_description,
+        c.article_local_description,
+        c.number_of_article,
+        c.hs_code,
+        c.sku_no,
+        c.item_model_nm,
+        c.options,
+        c.item_brand_nm,
+        c.item_orgn_nation_cd,
+        c.article_weight,
+        c.invoice_value,
+        a.c_company_name,
+        a.c_street1,
+        a.c_street2,
+        a.c_street3,
+        a.c_city,
+        a.c_state,
+        a.c_postal_code,
+        a.c_country,
+        a.c_receiver_vat_no,
+        a.c_contact_person,
+        a.c_country_calling_code,
+        a.c_phone,
+        a.c_phone2,
+        a.c_email,
+        a.s_company_name,
+        a.s_address,
+        a.s_city,
+        a.s_state,
+        a.s_postal_code,
+        a.s_country,
+        a.s_contact_person,
+        a.s_country_calling_code,
+        a.s_phone_no,
+        a.s_email
+  FROM if_order_info a
+  LEFT JOIN if_order_packages b
+    ON (a.order_id = b.order_id)
+  LEFT JOIN if_order_package_items c
+    ON (b.order_id = c.order_id
+   AND b.package_seq = c.package_seq)
+ WHERE a.ORDER_ID = #{order_id}
+ ORDER BY a.order_id, b.package_seq, c.item_seq
+    </select>
+
+    <delete id="deleteOrder" parameterType="java.util.HashMap">
+DELETE FROM if_order_info where order_id = #{order_id}
+    </delete>
+
+    <delete id="deleteOrderPackages" parameterType="java.util.HashMap">
+DELETE FROM if_order_packages where order_id = #{order_id}
+    </delete>
+
+    <delete id="deleteOrderPackageItems" parameterType="java.util.HashMap">
+DELETE FROM if_order_package_items where order_id = #{order_id}
+    </delete>
+
+    <update id="updateTrackingNo" parameterType="java.util.HashMap">
+/*SA010Mapper.updateTrackingNo*/
+UPDATE IF_ORDER_INFO
+   SET TRACKING_NO = #{tracking_no},
+       UPD_DTTM = now(),
+       UPD_ID = #{user_id},
+       UPD_IP = #{user_ip}
+ WHERE ORDER_ID = #{order_id}
+    </update>
+
+    <update id="uploadTrackingNo" parameterType="java.util.HashMap">
+/*SA010Mapper.uploadTrackingNo*/
+UPDATE IF_ORDER_INFO
+   SET TRACKING_NO = #{tracking_no},
+       UPD_DTTM = now(),
+       UPD_ID = #{user_id},
+       UPD_IP = #{user_ip}
+ WHERE TO_COMPANY_NAME = #{to_company_name}
+   AND REFERENCE_NO = #{reference_no}
+    </update>
+</mapper>

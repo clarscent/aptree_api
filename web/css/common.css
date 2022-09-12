@@ -1,0 +1,77 @@
+@font-face {
+	font-family: nanum;
+	src: url("/font/nanum.eot");
+	src: local("@"), url("/font/nanum.woff") format("woff");
+}
+
+@font-face {
+	font-family: nanumbarun;
+	src: url("/font/nanumbarun.eot");
+	src: local("@"), url("/font/nanumbarun.woff") format("woff");
+}
+
+@font-face {
+	font-family: YGO330;
+	src: url("/font/YGO330.eot");
+	src: local("@"), url("/font/YGO330.woff") format("woff");
+}
+
+@font-face {
+	font-family: malgun;
+	src: url("/font/malgun.eot");
+	src: local("@"), url("/font/malgun.woff") format("woff");
+}
+
+@font-face {
+	font-family: moeum;
+	src: url("/font/moeum.eot");
+	src: local("@"), url("/font/moeum.woff") format("woff");
+}
+
+* {
+	font-family: gulim;
+	font-size: 9pt;
+	color: #000;
+	/* 	border-collapse: collapse; */
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	color: #000;
+}
+
+html, body {
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+	height: 100%;
+}
+
+p, div, ul, li {
+	padding: 0px;
+	margin: 0px;
+}
+
+button {
+	cursor: pointer;
+}
+
+button:focus {
+	outline: 0;
+}
+
+select:focus {
+	outline: 0;
+}
+
+textarea:focus {
+	outline: 0;
+}
+
+input:focus {
+	outline: 0;
+}
+
+div.space {
+	display: inline-block;
+	width: 50px;
+}

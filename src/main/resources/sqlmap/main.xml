@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MainMapper">
+	<resultMap id="resultMap" type="java.util.HashMap"/>
+
+	<select id="selecUserInfo" resultType="com.dexa.module.main.vo.UserVO">
+--사용자정보 조회
+SELECT A.USR_ID, A.USR_NM, A.USR_GRP_CD
+  FROM SY_USR_INFO A
+ WHERE A.USR_ID = #{USR_ID}
+   AND A.USR_PW = #{USR_PW}
+   AND A.USE_YN = 'Y'
+ LIMIT 1
+	</select>
+
+    <select id="selectMenuList" resultType="com.dexa.module.main.vo.ProgramVO">
+-- 사용자 메뉴 목록 조회
+SELECT A.ORGA_CD, A.PGM_ID, A.PGM_NM, A.PGM_PATH,
+       A.PGM_YN, A.USE_YN,
+       A.BTN_SRCH_YN,
+       A.BTN_SAVE_YN,
+       A.BTN_DEL_YN,
+       A.BTN_ETC_1_YN,
+       A.BTN_ETC_2_YN,
+       A.BTN_ETC_3_YN,
+       A.BTN_ETC_4_YN,
+       A.BTN_ETC_5_YN,
+       A.BTN_ETC_1_LABEL,
+       A.BTN_ETC_2_LABEL,
+       A.BTN_ETC_3_LABEL,
+       A.BTN_ETC_4_LABEL,
+       A.BTN_ETC_5_LABEL,
+       'Y' IS_RUN_YN,
+       A.RMK,
+       A.REG_DT, A.REG_ID, A.REG_IP,
+       A.UPD_DT, A.UPD_ID, A.UPD_IP
+  FROM SY_PGM_INFO A
+ WHERE A.PGM_YN = 'Y'
+   AND A.USE_YN = 'Y'
+ ORDER BY A.PGM_ID
+	</select>
+</mapper>

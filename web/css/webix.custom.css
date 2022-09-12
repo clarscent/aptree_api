@@ -1,0 +1,60 @@
+.webix_invalid_cell {
+	position: initial;
+}
+
+.webix_ss_header div.webix_hcell {
+	text-align: center;
+}
+
+.webix_dtable .textLeft {
+	text-align: left;
+}
+
+.webix_dtable .textCenter {
+	text-align: center;
+}
+
+.webix_dtable .textRight {
+	text-align: right;
+}
+
+.div.webix_row_select {
+	background: #3da3ef;
+}
+
+.webix_table_masterCheckBox, .webix_table_checkbox {
+	margin-top: 7px;
+}
+
+.webix_hcell, .webix_cell {
+	padding: 0px 5px 0px 5px;
+}
+
+.webix_column > div, .webix_table_cell {
+	padding: 0 5px;
+}
+
+.webix_view {
+	border-top:1px solid #000;
+	border-bottom:1px solid #000;
+}
+
+.webix_table_masterCheckBox, .webix_table_checkbox {
+	vertical-align: middle;
+ 	margin:0px; 
+/* 	margin-top:4px; */
+	text-align: center;
+}
+
+.webix_invalid_cell:after {
+	border:0px none;
+}
+
+.webix_hcell.webix_ss_filter {
+    padding: 4px 5px 2px 5px;
+}
+
+.webix_multicombo {
+    border-top: none;
+    border-bottom: none;
+}

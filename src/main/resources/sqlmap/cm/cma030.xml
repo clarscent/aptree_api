@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CMA030Mapper">
+	<select id="select" resultType="java.util.HashMap">
+SELECT A.CMPN_CD, A.PRDC_NO, A.PRDC_NM,
+       A.CLSF, FN_COMCODE(A.CMPN_CD, 'CM210', A.CLSF) CLSF_NM,
+       A.DTLS_CLSF, FN_COMCODE(A.CMPN_CD, 'CM220', A.DTLS_CLSF) DTLS_CLSF_NM,
+       A.SPCF,
+       A.QNTT,
+       A.UNIT, FN_COMCODE(A.CMPN_CD, 'CM050', A.UNIT) UNIT_NM,
+       A.OTSR_YN, FN_COMCODE(A.CMPN_CD, 'CM230', A.OTSR_YN) OTSR_YN_NM,
+       A.FCTR_CD, FN_COMCODE(A.CMPN_CD, 'FCTR', A.FCTR_CD) FCTR_NM,
+       A.PRPR_STCK,
+       A.VLDT,
+       A.SPLY_YN,
+       A.USE_YN,
+       A.IMPR_YN,
+       A.RPRS_PRDC_NO, A.RPRS_MOLD_NO, A.RMRK, A.RGST_DTTM, A.RGST_ID, A.RGST_IP, A.UPDT_DTTM, A.UPDT_ID, A.UPDT_IP
+  FROM CM0600M A
+ WHERE A.CMPN_CD = #{CMPN_CD}
+   AND A.PRDC_NM LIKE '%'||#{PRDC_NM}||'%'
+ ORDER BY A.PRDC_NO
+    </select>
+
+	<insert id="insert" parameterType="java.util.HashMap">
+INSERT INTO CM0600M (CMPN_CD, PRDC_NO, PRDC_NM, CLSF, DTLS_CLSF, SPCF, QNTT, UNIT, OTSR_YN, FCTR_CD, PRPR_STCK, VLDT, SPLY_YN, USE_YN, IMPR_YN, RPRS_PRDC_NO, RPRS_MOLD_NO, RMRK, RGST_DTTM, RGST_ID, RGST_IP, UPDT_DTTM, UPDT_ID, UPDT_IP)
+VALUES (#{CMPN_CD}, #{PRDC_NO}, #{PRDC_NM}, #{CLSF}, #{DTLS_CLSF}, #{SPCF}, #{QNTT}::NUMERIC, #{UNIT}, #{OTSR_YN}, #{FCTR_CD}, #{PRPR_STCK}::NUMERIC, #{VLDT}::NUMERIC, #{SPLY_YN}, #{USE_YN}, #{IMPR_YN}, #{RPRS_PRDC_NO}, #{RPRS_MOLD_NO}, #{RMRK}, #{RGST_DTTM}, #{RGST_ID}, #{RGST_IP}, #{UPDT_DTTM}, #{UPDT_ID}, #{UPDT_IP})
+	</insert>
+
+	<update id="update" parameterType="java.util.HashMap">
+UPDATE CM0600M
+   SET PRDC_NM = #{PRDC_NM},
+       CLSF = #{CLSF},
+       DTLS_CLSF = #{DTLS_CLSF},
+       SPCF = #{SPCF},
+       QNTT = COALESCE(#{QNTT}::NUMERIC, 0),
+       UNIT = #{UNIT},
+       OTSR_YN = #{OTSR_YN},
+       FCTR_CD = #{FCTR_CD},
+       PRPR_STCK = COALESCE(#{PRPR_STCK}::NUMERIC, 0),
+       VLDT = COALESCE(#{VLDT}::NUMERIC, 0),
+       SPLY_YN = #{SPLY_YN},
+       USE_YN = #{USE_YN},
+       IMPR_YN = #{IMPR_YN},
+       RPRS_PRDC_NO = #{RPRS_PRDC_NO},
+       RPRS_MOLD_NO = #{RPRS_MOLD_NO},
+       RMRK = #{RMRK},
+       UPDT_DTTM = #{UPDT_DTTM},
+       UPDT_ID = #{UPDT_ID},
+       UPDT_IP = #{UPDT_IP}
+ WHERE CMPN_CD = #{CMPN_CD}
+   AND PRDC_NO = #{PRDC_NO}
+	</update>
+
+	<delete id="delete" parameterType="java.util.HashMap">
+DELETE FROM CM0600M
+ WHERE CMPN_CD = #{CMPN_CD}
+   AND PRDC_NO = #{PRDC_NO}
+	</delete>
+</mapper>

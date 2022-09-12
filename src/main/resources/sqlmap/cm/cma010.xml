@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CMA010Mapper">
+	<select id="select" resultType="java.util.HashMap">
+SELECT A.CMPN_CD, A.EMPL_NO, A.EMPL_NM,
+       A.FCTR_CD, FN_COMCODE(A.CMPN_CD, 'FCTR', A.FCTR_CD) FCTR_NM,
+       A.DPRT_CD, FN_COMCODE(A.CMPN_CD, 'CM170', A.FCTR_CD) DPRT_NM,
+       A.PSTN, FN_COMCODE(A.CMPN_CD, 'CM110', A.PSTN) PSTN_NM,
+       A.SRTT, FN_COMCODE(A.CMPN_CD, 'CM120', A.SRTT) SRTT_NM,
+       A.JOIN_DATE, A.RSGN_DATE,
+       A.TEL_NO, A.SRVC_CMPN, A.ZIP_CD, A.ADRS, A.BRTH_DATE,
+       A.SRVD_STT, FN_COMCODE(A.CMPN_CD, 'CM130', A.SRVD_STT) SRVD_STT_NM,
+       A.GNDR, FN_COMCODE(A.CMPN_CD, 'CM140', A.GNDR) GNDR_NM,
+       A.DMST_YN, FN_COMCODE(A.CMPN_CD, 'CM150', A.DMST_YN) DMST_YN_NM,
+       A.TRDN_CHCK_YN, FN_COMCODE(A.CMPN_CD, 'CM160', A.TRDN_CHCK_YN) TRDN_CHCK_YN_NM,
+       A.TRDN_CARD_NO,
+       A.RMRK,
+       A.PCTR,
+       A.MES_PW,
+       A.RGST_DTTM, A.RGST_ID, A.RGST_IP,
+       A.UPDT_DTTM, A.UPDT_ID, A.UPDT_IP
+  FROM CM0200M A
+ WHERE A.CMPN_CD = #{CMPN_CD}
+   AND A.EMPL_NM LIKE '%'||#{EMPL_NM}||'%'
+    </select>
+
+	<insert id="insert" parameterType="java.util.HashMap">
+INSERT INTO CM0200M (CMPN_CD, EMPL_NO, EMPL_NM, FCTR_CD, DPRT_CD, PSTN, SRTT, JOIN_DATE, RSGN_DATE, TEL_NO, SRVC_CMPN, ZIP_CD, ADRS, BRTH_DATE, SRVD_STT, GNDR, DMST_YN, TRDN_CHCK_YN, TRDN_CARD_NO, RMRK, PCTR, MES_PW, RGST_DTTM, RGST_ID, RGST_IP, UPDT_DTTM, UPDT_ID, UPDT_IP)
+VALUES (#{CMPN_CD}, #{EMPL_NO}, #{EMPL_NM}, #{FCTR_CD}, #{DPRT_CD}, #{PSTN}, #{SRTT}, #{JOIN_DATE}, #{RSGN_DATE}, #{TEL_NO}, #{SRVC_CMPN}, #{ZIP_CD}, #{ADRS}, #{BRTH_DATE}, #{SRVD_STT}, #{GNDR}, #{DMST_YN}, #{TRDN_CHCK_YN}, #{TRDN_CARD_NO}, #{RMRK}, #{PCTR}, #{MES_PW}, #{RGST_DTTM}, #{RGST_ID}, #{RGST_IP}, #{UPDT_DTTM}, #{UPDT_ID}, #{UPDT_IP})
+	</insert>
+
+	<update id="update" parameterType="java.util.HashMap">
+UPDATE CM0200M
+   SET EMPL_NM = #{EMPL_NM},
+       FCTR_CD = #{FCTR_CD},
+       DPRT_CD = #{DPRT_CD},
+       PSTN = #{PSTN},
+       SRTT = #{SRTT},
+       JOIN_DATE = #{JOIN_DATE},
+       RSGN_DATE = #{RSGN_DATE},
+       TEL_NO = #{TEL_NO},
+       SRVC_CMPN = #{SRVC_CMPN},
+       ZIP_CD = #{ZIP_CD},
+       ADRS = #{ADRS},
+       BRTH_DATE = #{BRTH_DATE},
+       SRVD_STT = #{SRVD_STT},
+       GNDR = #{GNDR},
+       DMST_YN = #{DMST_YN},
+       TRDN_CHCK_YN = #{TRDN_CHCK_YN},
+       TRDN_CARD_NO = #{TRDN_CARD_NO},
+       RMRK = #{RMRK},
+       PCTR = #{PCTR},
+       MES_PW = #{MES_PW},
+       UPDT_DTTM = #{UPDT_DTTM},
+       UPDT_ID = #{UPDT_ID},
+       UPDT_IP = #{UPDT_IP}
+ WHERE CMPN_CD = #{CMPN_CD}
+   AND EMPL_NO = #{EMPL_NO}
+	</update>
+
+	<delete id="delete" parameterType="java.util.HashMap">
+DELETE FROM CM0200M
+ WHERE CMPN_CD = #{CMPN_CD}
+   AND EMPL_NO = #{EMPL_NO}
+	</delete>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommonMapper">
+	<resultMap id="resultMap" type="java.util.HashMap"/>
+
+	<select id="selectFileId" resultType="string">
+SELECT LPAD((COALESCE(MAX(FILE_ID)::NUMERIC, 0) + 1)::TEXT, 3, '0')  as FILE_ID
+  FROM HF_FILE_INFO
+ WHERE FILE_DT = #{FILE_DT}
+	</select>
+
+	<select id="selectFile" resultType="com.dexa.module.common.vo.FileVO">
+SELECT FILE_PATH, FILE_HASH_NM, FILE_NM
+  FROM HF_FILE_INFO
+ WHERE FILE_DT = #{FILE_DT}
+   AND FILE_ID = #{FILE_ID}
+	</select>
+
+	<insert id="insertFile" parameterType="com.dexa.module.common.vo.FileVO">
+--파일업로드
+INSERT INTO
+	HF_FILE_INFO
+    (FILE_DT, FILE_ID, SEQ, FILE_NM, FILE_HASH_NM, FILE_PATH, REG_ID, REG_IP)
+VALUES (#{FILE_DT}, #{FILE_ID}, 0, #{FILE_NM}, #{FILE_HASH_NM},
+		#{FILE_PATH}, #{REG_ID}, #{REG_IP})
+	</insert>
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CMA020Mapper">
+	<select id="select" resultType="java.util.HashMap">
+SELECT A.CMPN_CD, A.ACNT_CD, A.ACNT_NM,
+       A.BSNS_NO, A.RPRS_NM, A.ZIP_CD, A.ADRS, A.TEL_NO, A.FAX_NO, A.BSNS_CNDT, A.EVNT,
+       A.CLSF, FN_COMCODE(A.CMPN_CD, 'CM180', A.CLSF) CLSF_NM,
+       A.SRTT, FN_COMCODE(A.CMPN_CD, 'CM190', A.SRTT) SRTT_NM,
+       A.FCTR_CD, FN_COMCODE(A.CMPN_CD, 'FCTR', A.FCTR_CD) FCTR_NM,
+       A.CNTR_CD, FN_COMCODE(A.CMPN_CD, 'CM200', A.CNTR_CD) CNTR_NM,
+       A.MNGR_ID, FN_COMCODE(A.CMPN_CD, 'USER', A.MNGR_ID) MNGR_NM,
+       A.USE_YN,
+       A.RGST_DTTM, A.RGST_ID, A.RGST_IP,
+       A.UPDT_DTTM, A.UPDT_ID, A.UPDT_IP
+  FROM CM0300M A
+ WHERE A.CMPN_CD = #{CMPN_CD}
+   AND A.ACNT_NM LIKE '%'||#{ACNT_NM}||'%'
+ ORDER BY A.ACNT_CD
+    </select>
+
+	<insert id="insert" parameterType="java.util.HashMap">
+INSERT INTO CM0300M (CMPN_CD, ACNT_CD, ACNT_NM, BSNS_NO, RPRS_NM, ZIP_CD, ADRS, TEL_NO, FAX_NO, BSNS_CNDT, EVNT, CLSF, SRTT, FCTR_CD, CNTR_CD, MNGR_ID, USE_YN, RGST_DTTM, RGST_ID, RGST_IP, UPDT_DTTM, UPDT_ID, UPDT_IP)
+VALUES (#{CMPN_CD}, #{ACNT_CD}, #{ACNT_NM}, #{BSNS_NO}, #{RPRS_NM}, #{ZIP_CD}, #{ADRS}, #{TEL_NO}, #{FAX_NO}, #{BSNS_CNDT}, #{EVNT}, #{CLSF}, #{SRTT}, #{FCTR_CD}, #{CNTR_CD}, #{MNGR_ID}, #{USE_YN}, #{RGST_DTTM}, #{RGST_ID}, #{RGST_IP}, #{UPDT_DTTM}, #{UPDT_ID}, #{UPDT_IP})
+	</insert>
+
+	<update id="update" parameterType="java.util.HashMap">
+UPDATE CM0300M
+   SET ACNT_NM = #{ACNT_NM},
+       BSNS_NO = #{BSNS_NO},
+       RPRS_NM = #{RPRS_NM},
+       ZIP_CD = #{ZIP_CD},
+       ADRS = #{ADRS},
+       TEL_NO = #{TEL_NO},
+       FAX_NO = #{FAX_NO},
+       BSNS_CNDT = #{BSNS_CNDT},
+       EVNT = #{EVNT},
+       CLSF = #{CLSF},
+       SRTT = #{SRTT},
+       FCTR_CD = #{FCTR_CD},
+       CNTR_CD = #{CNTR_CD},
+       MNGR_ID = #{MNGR_ID},
+       USE_YN = #{USE_YN},
+       UPDT_DTTM = #{UPDT_DTTM},
+       UPDT_ID = #{UPDT_ID},
+       UPDT_IP = #{UPDT_IP}
+ WHERE CMPN_CD = #{CMPN_CD}
+   AND ACNT_CD = #{ACNT_CD}
+	</update>
+
+	<delete id="delete" parameterType="java.util.HashMap">
+DELETE FROM CM0300M
+ WHERE CMPN_CD = #{CMPN_CD}
+   AND ACNT_CD = #{ACNT_CD}
+	</delete>
+</mapper>

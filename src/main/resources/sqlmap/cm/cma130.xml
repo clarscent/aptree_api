@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CMA130Mapper">
+	<select id="select" resultType="java.util.HashMap">
+SELECT A.CMPN_CD, A.FCTR_CD, A.FCTR_NM,
+       A.CLPH_NO, A.TEL_NO, A.FAX_NO, A.ZIP_CD, A.ADRS,
+       A.RGST_DTTM, A.RGST_ID, A.RGST_IP, A.UPDT_DTTM, A.UPDT_ID, A.UPDT_IP
+  FROM CM0400M A
+ WHERE A.CMPN_CD = #{CMPN_CD}
+   AND A.FCTR_NM LIKE '%'||#{FCTR_NM}||'%'
+ ORDER BY A.FCTR_CD
+    </select>
+
+	<insert id="insert" parameterType="java.util.HashMap">
+INSERT INTO CM0400M (CMPN_CD, FCTR_CD, FCTR_NM, CLPH_NO, TEL_NO, FAX_NO, ZIP_CD, ADRS, RGST_DTTM, RGST_ID, RGST_IP, UPDT_DTTM, UPDT_ID, UPDT_IP)
+VALUES (#{CMPN_CD}, #{FCTR_CD}, #{FCTR_NM}, #{CLPH_NO}, #{TEL_NO}, #{FAX_NO}, #{ZIP_CD}, #{ADRS}, #{RGST_DTTM}, #{RGST_ID}, #{RGST_IP}, #{UPDT_DTTM}, #{UPDT_ID}, #{UPDT_IP})
+	</insert>
+
+	<update id="update" parameterType="java.util.HashMap">
+UPDATE CM0400M
+   SET FCTR_NM = #{FCTR_NM},
+       CLPH_NO = #{CLPH_NO},
+       TEL_NO = #{TEL_NO},
+       FAX_NO = #{FAX_NO},
+       ZIP_CD = #{ZIP_CD},
+       ADRS = #{ADRS},
+       UPDT_DTTM = #{UPDT_DTTM},
+       UPDT_ID = #{UPDT_ID},
+       UPDT_IP = #{UPDT_IP}
+ WHERE CMPN_CD = #{CMPN_CD}
+   AND FCTR_CD = #{FCTR_CD}
+	</update>
+
+	<delete id="delete" parameterType="java.util.HashMap">
+DELETE FROM CM0400M
+ WHERE CMPN_CD = #{CMPN_CD}
+   AND FCTR_CD = #{FCTR_CD}
+	</delete>
+</mapper>

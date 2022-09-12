@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SA030Mapper">
+<resultMap id="resultMap" type="java.util.HashMap"/>
+
+<select id="select" resultType="com.dexa.module.sa.vo.SaleMonthVO">
+--sa030.select
+SELECT A.COMP_CD, A.COMP_NM,
+       SUM(A.AMT) AMT_TOTAL,
+       SUM(A.AMT_MON_1) AMT_MON_1,
+       SUM(A.AMT_MON_2) AMT_MON_2,
+       SUM(A.AMT_MON_3) AMT_MON_3,
+       SUM(A.AMT_MON_4) AMT_MON_4,
+       SUM(A.AMT_MON_5) AMT_MON_5,
+       SUM(A.AMT_MON_6) AMT_MON_6,
+       SUM(A.AMT_MON_7) AMT_MON_7,
+       SUM(A.AMT_MON_8) AMT_MON_8,
+       SUM(A.AMT_MON_9) AMT_MON_9,
+       SUM(A.AMT_MON_10) AMT_MON_10,
+       SUM(A.AMT_MON_11) AMT_MON_11,
+       SUM(A.AMT_MON_12) AMT_MON_12
+  FROM (SELECT A.COMP_CD, A.COMP_NM,
+               CASE WHEN #{SUB_TYPE} = '1' THEN AMT1 ELSE AMT2 END AMT,
+               CASE WHEN SUBSTR(B.YYYY_MM, 5, 2) = '01' THEN (CASE WHEN #{SUB_TYPE} = '1' THEN AMT1 ELSE AMT2 END) ELSE 0 END AMT_MON_1,
+               CASE WHEN SUBSTR(B.YYYY_MM, 5, 2) = '02' THEN (CASE WHEN #{SUB_TYPE} = '1' THEN AMT1 ELSE AMT2 END) ELSE 0 END AMT_MON_2,
+               CASE WHEN SUBSTR(B.YYYY_MM, 5, 2) = '03' THEN (CASE WHEN #{SUB_TYPE} = '1' THEN AMT1 ELSE AMT2 END) ELSE 0 END AMT_MON_3,
+               CASE WHEN SUBSTR(B.YYYY_MM, 5, 2) = '04' THEN (CASE WHEN #{SUB_TYPE} = '1' THEN AMT1 ELSE AMT2 END) ELSE 0 END AMT_MON_4,
+               CASE WHEN SUBSTR(B.YYYY_MM, 5, 2) = '05' THEN (CASE WHEN #{SUB_TYPE} = '1' THEN AMT1 ELSE AMT2 END) ELSE 0 END AMT_MON_5,
+               CASE WHEN SUBSTR(B.YYYY_MM, 5, 2) = '06' THEN (CASE WHEN #{SUB_TYPE} = '1' THEN AMT1 ELSE AMT2 END) ELSE 0 END AMT_MON_6,
+               CASE WHEN SUBSTR(B.YYYY_MM, 5, 2) = '07' THEN (CASE WHEN #{SUB_TYPE} = '1' THEN AMT1 ELSE AMT2 END) ELSE 0 END AMT_MON_7,
+               CASE WHEN SUBSTR(B.YYYY_MM, 5, 2) = '08' THEN (CASE WHEN #{SUB_TYPE} = '1' THEN AMT1 ELSE AMT2 END) ELSE 0 END AMT_MON_8,
+               CASE WHEN SUBSTR(B.YYYY_MM, 5, 2) = '09' THEN (CASE WHEN #{SUB_TYPE} = '1' THEN AMT1 ELSE AMT2 END) ELSE 0 END AMT_MON_9,
+               CASE WHEN SUBSTR(B.YYYY_MM, 5, 2) = '10' THEN (CASE WHEN #{SUB_TYPE} = '1' THEN AMT1 ELSE AMT2 END) ELSE 0 END AMT_MON_10,
+               CASE WHEN SUBSTR(B.YYYY_MM, 5, 2) = '11' THEN (CASE WHEN #{SUB_TYPE} = '1' THEN AMT1 ELSE AMT2 END) ELSE 0 END AMT_MON_11,
+               CASE WHEN SUBSTR(B.YYYY_MM, 5, 2) = '12' THEN (CASE WHEN #{SUB_TYPE} = '1' THEN AMT1 ELSE AMT2 END) ELSE 0 END AMT_MON_12
+          FROM SA_OC_COMP_INFO A
+          LEFT JOIN SA_SALE_INFO B
+            ON (A.COMP_CD = B.COMP_CD
+            AND B.YYYY_MM LIKE #{YEAR} || '%'
+            AND B.TYPE = '1')
+       ) A
+ GROUP BY A.COMP_CD, A.COMP_NM
+ ORDER BY 1
+</select>
+</mapper>

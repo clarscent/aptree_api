@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CMA060Mapper">
+	<select id="select" resultType="java.util.HashMap">
+SELECT A.CMPN_CD, A.FCLT_CD, A.FCLT_NM,
+       A.LINE,
+       A.CLSF, FN_COMCODE(A.CMPN_CD, 'CM310', A.CLSF) CLSF_NM,
+       A.DTLS_CLSF, FN_COMCODE(A.CMPN_CD, 'CM320', A.DTLS_CLSF) DTLS_CLSF_NM,
+       A.FCTR_CD, FN_COMCODE(A.CMPN_CD, 'FCTR', A.FCTR_CD) FCTR_NM,
+       A.ASTS,
+       A.SPCF,
+       A.USE_YN,
+       A.WORK_INDC_YN,
+       A.PRCH_CMPN,
+       A.PRCH_DATE,
+       A.PRCH_AMNT,
+       A.PRCH_PRPS,
+       A.MNFC_CMPN_CD,
+       A.MNFC_DATE,
+       A.MNFC_NO,
+       A.SRL_NO,
+       A.RTNG,
+       A.MAIN_MNGR_NO, FN_COMCODE(A.CMPN_CD, 'USER', A.MAIN_MNGR_NO) MAIN_MNGR_NM,
+       A.SUB_MNGR_NO, FN_COMCODE(A.CMPN_CD, 'USER', A.SUB_MNGR_NO) SUB_MNGR_NM,
+       A.RGST_DTTM, A.RGST_ID, A.RGST_IP, A.UPDT_DTTM, A.UPDT_ID, A.UPDT_IP
+  FROM CM0500M A
+ WHERE A.CMPN_CD = #{CMPN_CD}
+   AND A.FCLT_NM LIKE '%'||#{FCLT_NM}||'%'
+ ORDER BY A.FCLT_CD
+    </select>
+
+	<insert id="insert" parameterType="java.util.HashMap">
+INSERT INTO CM0500M (CMPN_CD, FCLT_CD, FCLT_NM, LINE, CLSF, DTLS_CLSF, FCTR_CD, ASTS, SPCF, USE_YN, WORK_INDC_YN, PRCH_CMPN, PRCH_DATE, PRCH_AMNT, PRCH_PRPS, MNFC_CMPN_CD, MNFC_DATE, MNFC_NO, SRL_NO, RTNG, MAIN_MNGR_NO, SUB_MNGR_NO, RGST_DTTM, RGST_ID, RGST_IP, UPDT_DTTM, UPDT_ID, UPDT_IP)
+VALUES (#{CMPN_CD}, #{FCLT_CD}, #{FCLT_NM}, #{LINE}, #{CLSF}, #{DTLS_CLSF}, #{FCTR_CD}, #{ASTS}, #{SPCF}, #{USE_YN}, #{WORK_INDC_YN}, #{PRCH_CMPN}, #{PRCH_DATE}, #{PRCH_AMNT}::NUMERIC, #{PRCH_PRPS}, #{MNFC_CMPN_CD}, #{MNFC_DATE}, #{MNFC_NO}, #{SRL_NO}, #{RTNG}, #{MAIN_MNGR_NO}, #{SUB_MNGR_NO}, #{RGST_DTTM}, #{RGST_ID}, #{RGST_IP}, #{UPDT_DTTM}, #{UPDT_ID}, #{UPDT_IP})
+	</insert>
+
+	<update id="update" parameterType="java.util.HashMap">
+UPDATE CM0500M
+   SET FCLT_NM = #{FCLT_NM},
+       LINE = #{LINE},
+       CLSF = #{CLSF},
+       DTLS_CLSF = #{DTLS_CLSF},
+       FCTR_CD = #{FCTR_CD},
+       ASTS = #{ASTS},
+       SPCF = #{SPCF},
+       USE_YN = #{USE_YN},
+       WORK_INDC_YN = #{WORK_INDC_YN},
+       PRCH_CMPN = #{PRCH_CMPN},
+       PRCH_DATE = #{PRCH_DATE},
+       PRCH_AMNT = #{PRCH_AMNT}::NUMERIC,
+       PRCH_PRPS = #{PRCH_PRPS},
+       MNFC_CMPN_CD = #{MNFC_CMPN_CD},
+       MNFC_DATE = #{MNFC_DATE},
+       MNFC_NO = #{MNFC_NO},
+       SRL_NO = #{SRL_NO},
+       RTNG = #{RTNG},
+       MAIN_MNGR_NO = #{MAIN_MNGR_NO},
+       SUB_MNGR_NO = #{SUB_MNGR_NO},
+       UPDT_DTTM = #{UPT_DTTM},
+       UPDT_ID = #{UPDT_ID},
+       UPDT_IP = #{UPDT_IP}
+ WHERE CMPN_CD = #{CMPN_CD}
+   AND FCLT_CD = #{FCLT_CD}
+	</update>
+
+	<delete id="delete" parameterType="java.util.HashMap">
+DELETE FROM CM0500M
+ WHERE CMPN_CD = #{CMPN_CD}
+   AND FCLT_CD = #{FCLT_CD}
+	</delete>
+</mapper>

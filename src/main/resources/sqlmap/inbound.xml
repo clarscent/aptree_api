@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="InboundMapper">
+<resultMap id="resultMap" type="java.util.HashMap"/>
+    <select id="checkApiKey" resultType="java.util.HashMap">
+/*inbound.checkApiKey*/
+SELECT CASE WHEN COUNT(*) > 0 THEN 'Y' ELSE 'N' END AUTH_YN
+  FROM IF_COMP_INFO
+ WHERE company_code = #{CompanyCode}
+   AND api_key = #{ApiKey}
+    </select>
+
+    <select id="selectOrderID" resultType="java.util.HashMap">
+/*inbound.selectOrderID*/
+SELECT TO_CHAR(CURRENT_TIMESTAMP, 'YYYYMMDD')||'-'||LPAD(FN_SEQ('IF','ORDER', TO_CHAR(CURRENT_TIMESTAMP, 'YYYYMMDD'))::TEXT, 5, '0') "ORDER_ID";
+    </select>
+
+    <select id="selectOrder" resultType="com.dexa.module.api.vo.OrdersVO">
+/*inbound.selectOrder*/
+SELECT *
+  FROM IF_ORDER_INFO
+    </select>
+
+    <select id="selectPackages" resultType="com.dexa.module.api.vo.OrdersVO">
+/*inbound.selectOrder*/
+SELECT *
+  FROM IF_ORDER_PACKAGES
+ WHERE ORDER_ID = #{order_id}
+    </select>
+
+    <select id="selectItems" resultType="com.dexa.module.api.vo.OrdersVO">
+/*inbound.selectOrder*/
+SELECT *
+  FROM IF_ORDER_PACKAGE_ITEMS
+ WHERE ORDER_ID = #{order_id}
+   AND PACKAGE_SEQ = #{package_seq}
+    </select>
+
+
+    <insert id="insertOrder" parameterType="com.dexa.module.api.vo.OrdersVO">
+INSERT INTO IF_ORDER_INFO
+       (ORDER_ID, ORDER_DT, COMPANY_CODE, REFERENCE_NO, TO_COMPANY_NAME, TO_COMPANY_NICKNAME,
+        TO_STREET1, TO_STREET2, TO_STREET3, TO_CITY, TO_STATE,
+        TO_POSTAL_CODE, TO_COUNTRY, TO_RECEIVER_VAT_NO, TO_CONTACT_PERSON, TO_COUNTRY_CALLING_CODE,
+        TO_PHONE, TO_PHONE2, TO_EMAIL, SERVICE_CLASS, INBOUND_OUTBOUND,
+        EXPECTED_PICKUP_DATE, GOODS_DESCRIPTION, INSTRUCTION, SENDER_NAME, INCO_TERMS,
+        DECLARATION_YN, INVOICE_TOTAL_VALUE, LENGTH_UNIT_CODE, WEIGHT_UNIT_CODE, CURRENCY_CODE,
+        SALES_CHANNEL, GOODS_ISSUE_NO, C_COMPANY_NAME, C_STREET1, C_STREET2,
+        C_STREET3, C_CITY, C_STATE, C_POSTAL_CODE, C_COUNTRY,
+        C_RECEIVER_VAT_NO, C_CONTACT_PERSON, C_COUNTRY_CALLING_CODE, C_PHONE, C_PHONE2,
+        C_EMAIL, DEL_YN,
+        RMK, REG_DTTM, REG_ID, REG_IP)
+VALUES (#{order_id}, TO_CHAR(NOW(), 'YYYYMMDD'), #{company_code}, #{reference_no}, #{to_company_name}, #{to_company_nickname},
+        #{to_street1}, #{to_street2}, #{to_street3}, #{to_city}, #{to_state},
+        #{to_postal_code}, #{to_country}, #{to_receiver_vat_no}, #{to_contact_person}, #{to_country_calling_code},
+        #{to_phone}, #{to_phone2}, #{to_email}, #{service_class}, #{inbound_outbound},
+        #{expected_pickup_date}, #{goods_description}, #{instruction}, #{sender_name}, #{inco_terms},
+        #{declaration_yn}, #{invoice_total_value}, #{length_unit_code}, #{weight_unit_code}, #{currency_code},
+        #{sales_channel}, #{goods_issue_no}, #{c_company_name}, #{c_street1}, #{c_street2},
+        #{c_street3}, #{c_city}, #{c_state}, #{c_postal_code}, #{c_country},
+        #{c_receiver_vat_no}, #{c_contact_person}, #{c_country_calling_code}, #{c_phone}, #{c_phone2},
+        #{c_email}, #{del_yn},
+        #{rmk}, now(), #{user_id}, #{user_ip})
+    </insert>
+
+    <insert id="insertPackages" parameterType="com.dexa.module.api.vo.PackagesVO">
+INSERT INTO if_order_packages
+       (order_id, package_seq, commercial_yn, package_remark, weight,
+        width, depth, height, del_yn,
+        rmk, reg_dttm, reg_id, reg_ip)
+VALUES (#{order_id}, #{package_seq}, #{commercial_yn}, #{package_remark}, #{weight},
+        #{width}, #{depth}, #{height}, #{del_yn},
+        #{rmk}, now(), #{user_id}, #{user_ip})
+    </insert>
+
+    <insert id="insertPackageItems" parameterType="com.dexa.module.api.vo.ItemsVO">
+insert into if_order_package_items
+      (order_id, package_seq, item_seq, article_category, article_name,
+       article_url, article_description, article_local_description, number_of_article, hs_code,
+       item_model_nm, item_brand_nm, item_orgn_nation_cd, article_weight, invoice_value,
+       sku_no, options, del_yn,
+       rmk, reg_dttm, reg_id, reg_ip, upd_dttm, upd_id, upd_ip)
+VALUES (#{order_id}, #{package_seq}, #{item_seq}, #{article_category}, #{article_name},
+        #{article_url}, #{article_description}, #{article_local_description}, #{number_of_article}, #{hs_code},
+        #{item_model_nm}, #{item_brand_nm}, #{item_orgn_nation_cd}, #{article_weight}, #{invoice_value},
+        #{sku_no}, #{options}, #{del_yn},
+        #{rmk}, #{reg_dttm}, #{reg_id}, #{reg_ip}, #{upd_dttm}, #{upd_id}, #{upd_ip})
+    </insert>
+
+    <update id="updateOrder" parameterType="com.dexa.module.api.vo.OrdersVO">
+UPDATE IF_ORDER_INFO
+   SET REFERENCE_NO = #{reference_no},
+       TO_COMPANY_NAME = #{to_company_name},
+       TO_COMPANY_NICKNAME = #{to_company_nickname},
+       TO_STREET1 = #{to_street1},
+       TO_STREET2 = #{to_street2},
+       TO_STREET3 = #{to_street3},
+       TO_CITY = #{to_city},
+       TO_STATE = #{to_state},
+       TO_POSTAL_CODE = #{to_postal_code},
+       TO_COUNTRY = #{to_country},
+       TO_RECEIVER_VAT_NO = #{to_receiver_vat_no},
+       TO_CONTACT_PERSON = #{to_contact_person},
+       TO_COUNTRY_CALLING_CODE = #{to_country_calling_code},
+       TO_PHONE = #{to_phone},
+       TO_PHONE2 = #{to_phone2},
+       TO_EMAIL = #{to_email},
+       SERVICE_CLASS = #{service_class},
+       INBOUND_OUTBOUND = #{inbound_outbound},
+       EXPECTED_PICKUP_DATE = #{expected_pickup_date},
+       GOODS_DESCRIPTION = #{goods_description},
+       INSTRUCTION = #{instruction},
+       SENDER_NAME = #{sender_name},
+       INCO_TERMS = #{inco_terms},
+       DECLARATION_YN = #{declaration_yn},
+       INVOICE_TOTAL_VALUE = #{invoice_total_value},
+       LENGTH_UNIT_CODE = #{length_unit_code},
+       WEIGHT_UNIT_CODE = #{weight_unit_code},
+       CURRENCY_CODE = #{currency_code},
+       SALES_CHANNEL = #{sales_channel},
+       GOODS_ISSUE_NO = #{goods_issue_no},
+       C_COMPANY_NAME = #{c_company_name},
+       C_STREET1 = #{c_street1},
+       C_STREET2 = #{c_street2},
+       C_STREET3 = #{c_street3},
+       C_CITY = #{c_city},
+       C_STATE = #{c_state},
+       C_POSTAL_CODE = #{c_postal_code},
+       C_COUNTRY = #{c_country},
+       C_RECEIVER_VAT_NO = #{c_receiver_vat_no},
+       C_CONTACT_PERSON = #{c_contact_person},
+       C_COUNTRY_CALLING_CODE = #{c_country_calling_code},
+       C_PHONE = #{c_phone},
+       C_PHONE2 = #{c_phone2},
+       C_EMAIL = #{c_email},
+       DEL_YN = #{del_yn},
+       RMK = #{rmk},
+       UPD_DTTM = now(),
+       UPD_ID = #{user_id},
+       UPD_IP = #{user_ip}
+ WHERE ORDER_ID = #{order_id}
+    </update>
+
+    <update id="updatePackages" parameterType="com.dexa.module.api.vo.PackagesVO">
+UPDATE IF_ORDER_PACKAGES
+   SET commercial_yn = #{commercial_yn},
+       package_remark = #{package_remark},
+       weight = #{weight},
+       width = #{width},
+       depth = #{depth},
+       height = #{height},
+       del_yn = #{del_yn},
+       rmk = #{rmk},
+       upd_dttm = now(),
+       upd_id = #{user_id},
+       upd_ip = #{user_ip}
+ WHERE order_id = #{order_id}
+   AND package_seq = #{package_seq}
+    </update>
+
+    <update id="updatePackageItems" parameterType="com.dexa.module.api.vo.ItemsVO">
+update if_order_package_items
+   set article_category = #{article_category},
+       article_name = #{article_name},
+       article_url = #{article_url},
+       article_description = #{article_description},
+       article_local_description = #{article_local_description},
+       number_of_article = #{number_of_article},
+       hs_code = #{hs_code},
+       item_model_nm = #{item_model_nm},
+       item_brand_nm = #{item_brand_nm},
+       item_orgn_nation_cd = #{item_orgn_nation_cd},
+       article_weight = #{article_weight},
+       invoice_value = #{invoice_value},
+       sku_no = #{sku_no},
+       options = #{options},
+       del_yn = #{del_yn},
+       rmk = #{rmk},
+       reg_dttm = #{reg_dttm},
+       reg_id = #{reg_id},
+       reg_ip = #{reg_ip},
+       upd_dttm = #{upd_dttm},
+       upd_id = #{upd_id},
+       upd_ip = #{upd_ip}
+ WHERE order_id = #{order_id}
+   AND package_seq = #{package_seq}
+   AND item_seq = #{item_seq}
+    </update>
+
+    <delete id="deleteOrder" parameterType="java.util.HashMap">
+DELETE FROM IF_ORDER_INFO
+ WHERE ORDER_ID = #{order_id}
+    </delete>
+
+    <delete id="deletePackages" parameterType="java.util.HashMap">
+DELETE FROM IF_ORDER_PACKAGES
+ WHERE order_id = #{order_id}
+    </delete>
+
+    <delete id="deletePackageItems" parameterType="java.util.HashMap">
+DELETE FROM if_order_package_items
+ WHERE order_id = #{order_id}
+    </delete>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SA020Mapper">
+<resultMap id="resultMap" type="java.util.HashMap"/>
+
+<select id="select" resultType="java.util.HashMap">
+--sa010.select
+SELECT company_code,
+       company_name,
+       api_key,
+       etc_1,
+       etc_2,
+       etc_3,
+       etc_4,
+       etc_5,
+       company_code as org_company_code,
+       'c' as row_type
+  FROM IF_COMP_INFO
+ WHERE 1 = 1
+   AND (company_code like '%' || coalesce(#{company_code}, '')|| '%' OR company_name LIKE '%' || coalesce(#{company_code}, '') || '%')
+ ORDER BY company_code
+</select>
+
+<insert id="save" parameterType="java.util.HashMap">
+--sa010.save
+INSERT INTO SA_SALE_INFO
+       (YYYY_MM, COMP_CD, TYPE, AMT1, AMT2, RMK, REG_ID, REG_IP)
+VALUES (#{YYYY_MM}, #{COMP_CD}, #{TYPE}, #{AMT1}, #{AMT2}, #{RMK}, #{REG_ID}, #{REG_IP})
+    ON CONFLICT (
+        YYYY_MM, COMP_CD, TYPE
+) DO
+UPDATE
+   SET AMT1 = #{AMT1},
+       AMT2 = #{AMT2},
+       UPD_DT = NOW(),
+       UPD_ID = #{REG_ID},
+       UPD_IP = #{REG_IP}
+</insert>
+
+</mapper>

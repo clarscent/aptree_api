@@ -1,0 +1,242 @@
+.mainBg {
+}
+
+#topArea {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 43px;
+	background-image: linear-gradient(90deg, #373737, #2f2f2f);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#373737', endColorstr='#2f2f2f'); /*For IE7-8-9*/
+	box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
+#topArea img {
+	position: absolute;
+	top: calc(50% - 10px);
+}
+
+#topArea div {
+	position: absolute;
+}
+
+#topArea div.logoText {
+	font-family: arial;
+	font-size: 11pt;
+	font-weight: bold;
+	color: #ccc;
+	top: calc(50% - 8px);
+}
+
+#topArea div.loginInfo {
+	position: absolute;
+	right: 125px;
+	color: #9b9b9b;
+	top: 15px;
+	background-image:url('/img/img_ic01.png');
+	background-repeat:no-repeat;
+	background-position: left center;
+	padding-left:20px;
+	height:13px;
+}
+
+#topArea div.loginInfo b {
+	color: #9b9b9b;
+}
+
+#btnLogout {
+	position: absolute;
+	font-size: 9pt;
+	color: #9b9b9b;
+	top: calc(50% - 11px);
+	right: 12px;
+	border-radius: 4px;
+	background-image: linear-gradient(90deg, #535353, #434343);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#535353', endColorstr='#434343'); /*For IE7-8-9*/
+	border: 0px;
+	height: 22px;
+	padding-left: 10px;
+	padding-right: 10px;
+	box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+	font-weight: bold;
+}
+
+#btnChangePasswd {
+	position: absolute;
+	font-size: 9pt;
+	color: #9b9b9b;
+	top: calc(50% - 11px);
+	right: 88px;
+	border-radius: 4px;
+	background-image: linear-gradient(90deg, #535353, #434343);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#535353', endColorstr='#434343'); /*For IE7-8-9*/
+	border: 0px;
+	height: 22px;
+	padding-left: 10px;
+	padding-right: 10px;
+	box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+	font-weight: bold;
+}
+
+#btnLogout:hover {
+	background-image: linear-gradient(90deg, #666, #555);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#666', endColorstr='#555'); /*For IE7-8-9*/
+}
+
+#btnLogout:active {
+	border: solid 1px #303030;
+	border-radius: 4px;
+	background-image: linear-gradient(-90deg, #333333, #404040);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#333333', endColorstr='#404040'); /*For IE7-8-9*/
+	box-shadow: inset 0px 1px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+#menuArea {
+	position: absolute;
+	height: calc(100% - 43px);
+	top: 43px;
+	background-color: #cbcccd;
+	padding-top: 38px;
+	width: 25px;
+	overflow: hidden;
+	z-index: 10;
+	-ms-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
+	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
+}
+
+#menuAreaButtonContainer {
+	position: absolute;
+	height: calc(100% - 43px);
+	top: 43px;
+	padding-top: 76px;
+	width: 43px;
+	overflow: hidden;
+	z-index: 1000;
+}
+
+#menuAreaButtonContainer button.menuBtn {
+	display: block;
+	border: 0px;
+	margin-left: 4px;
+	height: 39px;
+	background-color: transparent;
+	font-family: arial;
+	font-size: 9pt;
+	color: #7e7e7e;
+	-webkit-transform: rotate(270deg);
+	-moz-transform: rotate(270deg);
+	-ms-transform: rotate(270deg);
+	-o-transform: rotate(270deg);
+	transform: rotate(270deg);
+	-webkit-transform-origin: 0% 0%;
+	-ms-transform-origin: 0% 0%;
+	-o-transform-origin: 0% 0%;
+	transform-origin: 0% 0%;
+	background-image: url('/img/hr_bar.png');
+	background-repeat: no-repeat;
+	background-position: right 60%;
+	z-index: 1000;
+}
+
+#menuAreaButtonContainer button.menuBtn:first-child {
+	background-image: none;
+}
+
+#menuAreaButtonContainer button.menuBtn.selected, #menuAreaButtonContainer button.menuBtn.selected:first-child {
+	font-weight: bold;
+	font-size: 10.5pt;
+	color: #383838;
+	padding-left: 15px;
+	background-image: url('/img/img_mn3.png'), url('/img/img_mn2.png'), url('/img/img_mn1.png');
+	background-repeat: no-repeat, no-repeat, no-repeat;
+	background-position: left center, 20px center, right center;
+	background-size: 21px 39px, calc(100% - 35px) 39px, 16px 39px;
+}
+
+#subMenuArea {
+	z-index: 1100;
+	position: absolute;
+	width: 200px;
+	height: calc(100% - 43px);
+	top: 43px;
+	left: 25px;
+	background-image: linear-gradient(90deg, #fbfbfb, #efeeee);
+	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
+	width:0px;
+	overflow:visible;
+}
+
+#subMenuArea.opened {
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=1, startColorstr='#fbfbfb', endColorstr='#efeeee'); /*For IE7-8-9*/
+}
+
+.subMenuItemArea {
+	display :none;
+}
+
+.subMenuItemArea.opened {
+	display : block;
+}
+
+
+.subMenuItemArea.selected {
+}
+
+#menuOpen {
+	position: absolute;
+	right: 0px;
+	top: 10px;
+	width: 19px;
+	height: 21px;
+	border: 0px none;
+	background-color: transparent;
+	background-image: url('/img/btn_show.png');
+	z-index: 2000;
+}
+
+#menuOpen.open {
+	background-image: url('/img/btn_show_ov.png');
+}
+
+.programGroup, .programGroupBar, .btnProgram {
+	position: relative;
+	width: 230px;
+	margin-left:20px;
+}
+
+.programGroup {
+	margin-top:30px;
+/* 	font-size:11pt; */
+	color:#838383;
+	margin-bottom:5px;
+	font-weight:bold;
+}
+
+.programGroupBar {
+	height:2px;
+	border-top: 1px solid #dadada;
+	border-bottom: 1px solid #ffffff;
+	margin-bottom: 5px;
+}
+
+.btnProgram {
+	background-color: transparent;
+	background-image: url('/img/img_menu_item.png');
+	background-repeat: no-repeat;
+	background-position: left center;
+	background-size: 4px 6px;
+	border: 0 none;
+	text-align: left;
+	padding-left: 10px;
+	line-height: 150%;
+	color:#333333;
+	margin-bottom:5px;
+/* 	font-size:9.5pt; */
+}
+
+.btnProgram.selected {
+	color:#3da3ef;
+	font-weight:bold;
+	background-image: url('/img/img_menu_item_ov.png');
+}
